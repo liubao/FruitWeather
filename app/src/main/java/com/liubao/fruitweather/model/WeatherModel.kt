@@ -117,6 +117,12 @@ class Daily {
             transToString(it.toLong() * 1000)
         }
 
+    val firstWeather
+        get() = weather?.firstOrNull()
+
+    val firstWeatherDescription
+        get() = weather?.firstOrNull()?.description
+
 
     @SerializedName("sunrise")
     @Expose
@@ -158,12 +164,6 @@ class Daily {
     @Expose
     var weather: List<Weather>? = null
 
-    val firstWeather
-        get() = weather?.firstOrNull()
-
-    val firstWeatherDescription
-        get() = weather?.firstOrNull()?.description
-
 
     @SerializedName("clouds")
     @Expose
@@ -204,6 +204,26 @@ class FeelsLike {
 }
 
 class Hourly {
+
+    @ExperimentalTime
+    val time
+        get() = dt?.let {
+//            val timeM = Calendar.getInstance().apply {
+//                timeInMillis = it.toLong() * 1000
+//            }
+//            val current = Calendar.getInstance()
+//            when (timeM.get(Calendar.HOUR) - current.get(Calendar.HOUR)) {
+//in
+//            }
+            transToString(it.toLong() * 1000)
+        }
+
+    val firstWeather
+        get() = weather?.firstOrNull()
+
+    val firstWeatherDescription
+        get() = weather?.firstOrNull()?.description
+
     @SerializedName("dt")
     @Expose
     var dt: Int? = null

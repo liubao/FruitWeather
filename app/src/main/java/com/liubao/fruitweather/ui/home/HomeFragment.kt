@@ -8,15 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.liubao.fruitweather.R
-import com.liubao.fruitweather.model.Daily
+import com.liubao.fruitweather.model.MainModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
 
     val homeViewModel by viewModel<HomeViewModel>()
-    val adapter by lazy {
-        WAdapter(requireActivity(), ArrayList<Daily>())
+    val mainAdapter by lazy {
+        MainAdapter(requireActivity(), ArrayList<MainModel>())
     }
 
     override fun onCreateView(
@@ -30,15 +30,23 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView.adapter = adapter
-        recyclerView.apply {
-            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        mainRV.apply {
+            adapter = mainAdapter
+            layoutManager = LinearLayoutManager(activity)
         }
+
         homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            it.daily?.let {
-                adapter.items = it
+            val mainModel1 = MainModel(requireActivity()).apply {
+                style = MainModel.HOURLY
+                adapter = WHourlyAdapter(requireActivity(), it.hourly ?: ArrayList())
             }
-            adapter.notifyDataSetChanged()
+
+            val mainModel2 = MainModel(requireActivity()).apply {
+                style = MainModel.DAILY
+                adapter = WDailyAdapter(requireActivity(), it.daily ?: ArrayList())
+            }
+            mainAdapter.items = listOf(mainModel1, mainModel2)
+            mainAdapter.notifyDataSetChanged()
         })
         homeViewModel.apply {
             refreshing.observe(viewLifecycleOwner, Observer {
