@@ -10,27 +10,32 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp">
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{String.valueOf(model.time)}" />
+            android:text="@{String.valueOf(model.time)}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
         <TextView
             android:id="@+id/weather"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{String.valueOf(model.firstWeather)}"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            android:text="@{String.valueOf(model.firstWeatherDescription)}"
+            app:layout_constraintBottom_toBottomOf="@+id/img"
+            app:layout_constraintLeft_toRightOf="@+id/img"
+            app:layout_constraintTop_toTopOf="@+id/img" />
 
         <ImageView
             android:id="@+id/img"
             android:layout_width="40dp"
             android:layout_height="40dp"
             app:imageUrl="@{model.firstWeather.iconUrl}"
-            app:layout_constraintTop_toBottomOf="@+id/weather" />
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

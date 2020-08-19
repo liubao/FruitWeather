@@ -32,7 +32,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         recyclerView.adapter = adapter
         recyclerView.apply {
-            layoutManager = LinearLayoutManager(activity)
+            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         }
         homeViewModel.text.observe(viewLifecycleOwner, Observer {
             it.daily?.let {

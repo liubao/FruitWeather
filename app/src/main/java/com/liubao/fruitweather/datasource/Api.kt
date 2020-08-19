@@ -1,14 +1,13 @@
 package com.liubao.fruitweather.datasource
 
+import android.util.Log
 import com.liubao.fruitweather.model.WeatherModel
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
-import retrofit2.http.Path
 import retrofit2.http.Query
-import retrofit2.http.QueryMap
 
 
 object Api {
@@ -23,6 +22,17 @@ val retrofit = Retrofit.Builder()
     .baseUrl("https://api.openweathermap.org/")
 //    .addConverterFactory(ScalarsConverterFactory.create())
     .addConverterFactory(GsonConverterFactory.create())
+    .client(OkHttpClient.Builder().addNetworkInterceptor {
+        it.proceed(
+            it.request().newBuilder().url(
+                it.request().url().newBuilder().addEncodedQueryParameter("lang", "zh_cn").build()
+            ).build().also {
+                Log.d("retrofit_call", it.url().toString())
+            }
+        )
+    }.addInterceptor {
+        it.proceed(it.request())
+    }.build())
     .build()
 
 interface WeatherService {
